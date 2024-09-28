@@ -1,0 +1,15 @@
+# Qucs 0.0.19  C:/Users/Antônio/.qucs/exp4lab1_prj/circuit.sch
+
+Vdc:V1 gnd _net0 U="15 V"
+Idc:I1 _net1 gnd I="10mA"
+R:R4 _net1 _net2 R="3900 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R1 _net1 _net3 R="2200Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R3 gnd _net3 R="1000 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R2 _net3 _net2 R="3300 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+R:R5 _net2 _net0 R="1000 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+.DC:DC1 Temp="26.85" reltol="0.001" abstol="1 pA" vntol="1 uV" saveOPs="no" MaxIter="150" saveAll="no" convHelper="none" Solver="CroutLU"
+VProbe:Vth _net2 _net4
+IProbe:In _net2 _net5
+R:Carga _net6 _net2 R="750 Ohm" Temp="26.85" Tc1="0.0" Tc2="0.0" Tnom="26.85"
+VProbe:Vcarga _net2 _net6
+IProbe:Icarga _net6 gnd

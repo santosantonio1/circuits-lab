@@ -1,0 +1,33 @@
+Output:
+-------
+
+Starting new simulation on Sat 28. Sep 2024 at 11:10:22:428
+
+creating netlist... done.
+Starting D:/qucs-0.0.19-win32-mingw482-asco-freehdl-adms/bin/qucsator.exe
+
+project location: 
+modules to load: 0
+factorycreate.size() is 0
+factorycreate has registered:
+parsing netlist...
+checking netlist...
+netlist content
+      1 Idc instances
+      2 IProbe instances
+      1 DC instances
+      2 VProbe instances
+      6 R instances
+      1 Vdc instances
+creating netlist...
+
+Simulation ended on Sat 28. Sep 2024 at 11:10:22:489
+Ready.
+
+
+
+Errors and Warnings:
+--------------------
+
+WARNING: DC1: inserted virtual resistance at node `_net4' connected to [Vth]
+
