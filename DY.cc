@@ -1,46 +1,38 @@
 #include <iostream>
 #include <array>
-#include <algorithm>
 #include <complex>
 #include <regex>
 #include <stdexcept>
-#include <sstream>
+#include <cmath>
+#include <numbers>
 using namespace std;
 
-// GPT THE GOAT
-std::complex<double> parse(const std::string& str) {
-    // Handle case with both real and imaginary parts (i/j)
-    std::regex pattern(R"(([-+]?\d*\.?\d+)?([+-]?\d*\.?\d+)([ij]))");
+#define __PI__ std::numbers::pi
+
+auto parse(const string& str) -> complex<double> {
     std::smatch match;
-
-    // Matching complex numbers with both real and imaginary parts
-    if (std::regex_match(str, match, pattern)) {
-        double real = match[1].str().empty() ? 0.0 : std::stod(match[1].str());
-        double imag = std::stod(match[2].str());
-
-        return std::complex<double>(real, imag);
-    } 
-    // Handle purely imaginary numbers (e.g. "3j" or "-5j")
-    else if (std::regex_match(str, match, std::regex(R"([+-]?\d+[ij])"))) {
-        double imag = std::stod(str.substr(0, str.size() - 1));  // Remove 'j' or 'i'
-        return std::complex<double>(0.0, imag);
-    } 
-    // Handle pure real numbers (e.g. "4" or "-2")
-    else if (std::regex_match(str, match, std::regex(R"([+-]?\d*\.?\d+)"))) {
-        double real = std::stod(str);
-        return std::complex<double>(real, 0.0);
-    } 
-    // Handle cases where only "j" or "i" is provided (including negative j or i)
-    else if (str == "j" || str == "i") {
-        return std::complex<double>(0.0, 1.0); // Purely imaginary number
-    }
-    else if (str == "-j" || str == "-i") {
-        return std::complex<double>(0.0, -1.0); // Purely imaginary number with negative sign
-    }
-    // Handle invalid format
-    else {
-        throw std::invalid_argument("(!) Error: Invalid complex number format. Try it a+bi or a+bj form\n");
-    }
+    return 
+        regex_match(str, match, regex(R"(([-+]?\d*\.?\d+)?([+-]?\d*\.?\d+)([ij]))")) ? complex<double> {
+            match[1].str().empty() ? 0.0 : stod(match[1].str()),
+            std::stod(match[2].str())
+        } :
+        regex_match(str, match, regex(R"([+-]?\d+[ij])")) ? complex<double> {
+            0.0,
+            stod(str.substr(0, str.size() - 1))
+        } :
+        regex_match(str, match, regex(R"([+-]?\d*\.?\d+)")) ? complex<double> {
+            stod(str),
+            0.0
+        } :
+        (str == "j" || str == "i") ? complex<double> {
+            0.0,
+            1.0
+        } : 
+        (str == "-j" || str == "-i") ? complex<double> {
+            0.0,
+            -1.0
+        } :
+        throw invalid_argument("(!) Error: Invalid complex number format. Try it a+bi or a+bj form\n");
 }
 
 auto DY(const array<complex<double>, 3>& abc) -> array<complex<double>, 3> {
@@ -50,6 +42,21 @@ auto DY(const array<complex<double>, 3>& abc) -> array<complex<double>, 3> {
         (abc[0]*abc[2])/sum,
         (abc[0]*abc[1])/sum
      };
+}
+
+auto polar(const complex<double> &z) -> complex<double> {
+    const double phase = atan(abs(z.imag()/z.real()));
+    auto deg = [=](const double x) {
+        return (x*180)/__PI__;
+    };
+    return {
+        hypot(z.real(), z.imag()),
+        deg (
+            (z.real() > 0 && z.imag() > 0) ?  phase : 
+            (z.real() > 0 && z.imag() < 0) ? -phase :
+            (z.real() < 0 && z.imag() > 0) ? __PI__ - phase : __PI__ + phase
+        )
+    };
 }
 
 int main(int argc, char** argv) {
@@ -85,6 +92,11 @@ int main(int argc, char** argv) {
         cout << res[0] << ", ";
         cout << res[1] << ", ";
         cout << res[2] << ")\n";
+
+        cout << "\n> [POLAR] : ";
+        cout << polar(res[0]) << ' ';
+        cout << polar(res[1]) << ' ';
+        cout << polar(res[2]) << '\n';
         cout << "\n\n---------------------------------------------\n";
     }
     catch (const exception& e) {
